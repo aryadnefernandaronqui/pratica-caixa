@@ -1,8 +1,5 @@
-import AdbIcon from "@mui/icons-material/Adb";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Badge } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -10,35 +7,45 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import routes from "../routes/routes";
-
-const settings = ["Logout"];
+import { useAppSelector } from "../store/hooks";
+import { selectAll } from "../store/modules/transactions/TransactionsSlice";
 
 function ResponsiveAppBar() {
+    const transactions = useAppSelector(selectAll);
     const navigate = useNavigate();
 
+    const mostrarSaldo = () => {
+        let saldo = 0;
+        transactions.forEach((item) => {
+            if (item.type === "Entrada") {
+                saldo += Number(item.value);
+            } else {
+                saldo -= Number(item.value);
+            }
+        });
+        return saldo;
+        // const valorEntradas = transactions.filter((item) => item.type === "Entrada");
+        // const saldoEntrada = valorEntradas.reduce((soma, valor) => soma + Number(valor.value), 0);
+        // const valorSaidas = transactions.filter((item) => item.type === "Saida");
+        // const saldoSaidas = valorSaidas.reduce((soma, valor) => soma + Number(valor.value), 0);
+
+        // return saldoEntrada - saldoSaidas;
+    };
+
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = (url: string) => {
         setAnchorElNav(null);
         navigate(url);
-    };
-
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
     };
 
     return (
@@ -120,6 +127,16 @@ function ResponsiveAppBar() {
                     >
                         Minhas Transações
                     </Typography>
+
+                    <Box
+                        sx={{
+                            flexGrow: 4,
+                            display: { xs: "none", md: "flex" },
+                            justifyContent: { md: "center" },
+                        }}
+                    >
+                        <Typography variant="h6">Saldo da conta R$ ${mostrarSaldo()}</Typography>
+                    </Box>
 
                     <Box
                         sx={{

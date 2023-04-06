@@ -1,14 +1,10 @@
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import ImageIcon from "@mui/icons-material/Image";
 import PaidIcon from "@mui/icons-material/Paid";
-import WorkIcon from "@mui/icons-material/Work";
-import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Divider, Grid, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
-import { type } from "os";
 import * as React from "react";
 
 import { useAppSelector } from "../store/hooks";
@@ -45,16 +41,6 @@ const ListTransactions: React.FC = () => {
                                     </>
                                 );
                             })}
-
-                        <ListItem>
-                            <ListItemAvatar>
-                                <Avatar>
-                                    <PaidIcon />
-                                </Avatar>
-                            </ListItemAvatar>
-
-                            <Typography variant="h6">Saldo da conta R$ 0</Typography>
-                        </ListItem>
                     </List>
                 </Grid>
                 <Grid item xs={12} sm={6}>
