@@ -27,6 +27,7 @@ function ResponsiveAppBar() {
             } else {
                 saldo -= Number(item.value);
             }
+            
         });
         return saldo;
         // const valorEntradas = transactions.filter((item) => item.type === "Entrada");
@@ -135,7 +136,7 @@ function ResponsiveAppBar() {
                             justifyContent: { md: "center" },
                         }}
                     >
-                        <Typography variant="h6">Saldo da conta R$ ${mostrarSaldo()}</Typography>
+                        <Typography variant="h6">Saldo da conta R$ {mostrarSaldo()}</Typography>
                     </Box>
 
                     <Box

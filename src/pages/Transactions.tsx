@@ -8,6 +8,7 @@ import {
     RadioGroup,
     TextField,
     Typography,
+    Alert,
 } from "@mui/material";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
@@ -24,6 +25,7 @@ const alignCenter = {
 
 const Transactions: React.FC = () => {
     const [transactions, setTransactions] = useState<TransactionType>({} as TransactionType);
+    const [alertButton, setAlertButton] = useState<boolean>(false)
     const dispatch = useAppDispatch();
 
     const onSave = (e: FormEvent) => {
@@ -32,6 +34,7 @@ const Transactions: React.FC = () => {
         dispatch(
             addTransaction({ id: Date.now(), value: transactions.value, type: transactions.type }),
         );
+        clear()
     };
 
     const handleTransactions = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +44,14 @@ const Transactions: React.FC = () => {
     const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
         setTransactions({ ...transactions, type: e.target.value as "Saida" | "Entrada" });
     };
+
+    const clear = () => {
+        setTransactions({
+            type: 'Entrada',
+            value: 0,
+            id: 0
+        }) 
+    }
     return (
         <>
             <Grid container sx={{ ...alignCenter, marginTop: "2rem" }}>
@@ -72,7 +83,7 @@ const Transactions: React.FC = () => {
                             label="Valor"
                             name="value"
                             type="number"
-                            // value={profile.age || ""}
+                            value={transactions.value}
                             onChange={handleTransactions}
                         />
 
@@ -91,6 +102,8 @@ const Transactions: React.FC = () => {
                         </Button>
                     </Box>
                 </Paper>
+                {alertButton ? (<Alert severity="success" sx={{marginTop: '20px'}}>This is a success alert — check it out!</Alert>) : (<></>)}
+
             </Grid>
         </>
     );
