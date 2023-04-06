@@ -17,6 +17,7 @@ const transactionsSlice = createSlice({
     initialState: adapter.getInitialState(),
     reducers: {
         addTransaction: adapter.addOne,
+        editTransaction: adapter.updateOne,
     },
 });
 
@@ -25,4 +26,4 @@ export const { selectAll, selectById } = adapter.getSelectors(
 );
 
 export const TransactionsSlice = transactionsSlice.reducer;
-export const { addTransaction } = transactionsSlice.actions;
+export const { addTransaction, editTransaction } = transactionsSlice.actions;

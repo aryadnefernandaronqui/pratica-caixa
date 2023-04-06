@@ -25,16 +25,28 @@ const alignCenter = {
 
 const Transactions: React.FC = () => {
     const [transactions, setTransactions] = useState<TransactionType>({} as TransactionType);
-    const [alertButton, setAlertButton] = useState<boolean>(false)
+    const [alertButton, setAlertButton] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
+    const clear = () => {
+        setTransactions({
+            type: "Entrada",
+            value: 0,
+            id: 0,
+        });
+
+        setTimeout(() => {
+            setAlertButton(false);
+        }, 3000);
+    };
     const onSave = (e: FormEvent) => {
         e.preventDefault();
 
         dispatch(
             addTransaction({ id: Date.now(), value: transactions.value, type: transactions.type }),
         );
-        clear()
+        setAlertButton(true);
+        clear();
     };
 
     const handleTransactions = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,13 +57,6 @@ const Transactions: React.FC = () => {
         setTransactions({ ...transactions, type: e.target.value as "Saida" | "Entrada" });
     };
 
-    const clear = () => {
-        setTransactions({
-            type: 'Entrada',
-            value: 0,
-            id: 0
-        }) 
-    }
     return (
         <>
             <Grid container sx={{ ...alignCenter, marginTop: "2rem" }}>
@@ -97,13 +102,23 @@ const Transactions: React.FC = () => {
                             <FormControlLabel value="Saida" control={<Radio />} label="Saida" />
                         </RadioGroup>
 
-                        <Button variant="contained" onClick={onSave}>
+                        <Button
+                            type="button"
+                            variant="contained"
+                            disabled={!transactions.type || !transactions.value}
+                            onClick={onSave}
+                        >
                             Cadastrar
                         </Button>
                     </Box>
                 </Paper>
-                {alertButton ? (<Alert severity="success" sx={{marginTop: '20px'}}>This is a success alert — check it out!</Alert>) : (<></>)}
-
+                {alertButton ? (
+                    <Alert severity="success" sx={{ marginTop: "20px" }}>
+                        Transação cadastrada com sucesso!
+                    </Alert>
+                ) : (
+                    <></>
+                )}
             </Grid>
         </>
     );

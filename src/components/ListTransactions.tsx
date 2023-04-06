@@ -1,5 +1,23 @@
+import EditIcon from "@mui/icons-material/Edit";
 import PaidIcon from "@mui/icons-material/Paid";
-import { Divider, Grid, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
+    FormControlLabel,
+    Grid,
+    IconButton,
+    Paper,
+    Radio,
+    RadioGroup,
+    TextField,
+    Typography,
+} from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -9,9 +27,18 @@ import * as React from "react";
 
 import { useAppSelector } from "../store/hooks";
 import { selectAll } from "../store/modules/transactions/TransactionsSlice";
+import TransactionType from "../types/TransactionType";
 
 const ListTransactions: React.FC = () => {
     const reduxTransactions = useAppSelector(selectAll);
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleEdit = (item: TransactionType) => {
+        console.log(item);
+        setOpen(true);
+    };
 
     return (
         <>
@@ -36,6 +63,9 @@ const ListTransactions: React.FC = () => {
                                                 primary={`R$ ${item.value}`}
                                                 secondary={item.type}
                                             />
+                                            <IconButton onClick={() => handleEdit(item)}>
+                                                <EditIcon />
+                                            </IconButton>
                                         </ListItem>
                                         <Divider variant="inset" component="li" />
                                     </>
@@ -63,6 +93,9 @@ const ListTransactions: React.FC = () => {
                                                 primary={`R$ ${item.value}`}
                                                 secondary={item.type}
                                             />
+                                            <IconButton onClick={() => handleEdit(item)}>
+                                                <EditIcon />
+                                            </IconButton>
                                         </ListItem>
                                         <Divider variant="inset" component="li" />
                                     </>
@@ -70,6 +103,87 @@ const ListTransactions: React.FC = () => {
                             })}
                     </List>
                 </Grid>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <Grid container sx={{ marginTop: "2rem" }}>
+                        <Paper
+                            sx={{
+                                minWidth: "300px",
+                                padding: "1rem",
+                            }}
+                        >
+                            <Box>
+                                <Typography variant="h4" align="center">
+                                    Transação
+                                </Typography>
+                            </Box>
+                            <Box
+                                component="form"
+                                sx={{
+                                    marginTop: 2,
+
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 2,
+                                }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                <TextField
+                                    id="outlined-age-input"
+                                    label="Valor"
+                                    name="value"
+                                    type="number"
+                                    // value={transactions.value}
+                                    // onChange={handleTransactions}
+                                />
+
+                                <RadioGroup
+                                    name="radio-buttons-group"
+                                    sx={{ display: "inline" }}
+                                    // onChange={handleSelect}
+                                    // value={profile.gender || "female"}
+                                >
+                                    <FormControlLabel
+                                        value="Entrada"
+                                        control={<Radio />}
+                                        label="Entrada"
+                                    />
+                                    <FormControlLabel
+                                        value="Saida"
+                                        control={<Radio />}
+                                        label="Saida"
+                                    />
+                                </RadioGroup>
+
+                                {/* <Button
+                                    type="button"
+                                    variant="contained"
+                                    disabled={!transactions.type || !transactions.value}
+                                    onClick={onSave}
+                                >
+                                    Cadastrar
+                                </Button> */}
+                                <Grid container>
+                                    <Grid item xs={6}>
+                                        <Button variant="contained" onClick={handleClose}>
+                                            Editar
+                                        </Button>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Button variant="contained" onClick={handleClose} autoFocus>
+                                            Cancelar
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        </Paper>
+                    </Grid>
+                </Dialog>
             </Grid>
         </>
     );

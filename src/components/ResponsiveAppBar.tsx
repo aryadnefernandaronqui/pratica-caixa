@@ -27,7 +27,6 @@ function ResponsiveAppBar() {
             } else {
                 saldo -= Number(item.value);
             }
-            
         });
         return saldo;
         // const valorEntradas = transactions.filter((item) => item.type === "Entrada");
