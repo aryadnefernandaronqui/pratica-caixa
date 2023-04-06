@@ -120,6 +120,7 @@ function ResponsiveAppBar() {
                     >
                         Minhas Transações
                     </Typography>
+
                     <Box
                         sx={{
                             flexGrow: 1,

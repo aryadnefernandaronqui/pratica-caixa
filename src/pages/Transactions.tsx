@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { addTransaction, selectAll } from "../store/modules/transactions/TransactionsSlice";
 import TransactionType from "../types/TransactionType";
 
 const alignCenter = {
@@ -22,13 +24,14 @@ const alignCenter = {
 
 const Transactions: React.FC = () => {
     const [transactions, setTransactions] = useState<TransactionType>({} as TransactionType);
-    // useEffect(() => {
-    //     console.log(transactions);
-    // }, [transactions]);
+    const dispatch = useAppDispatch();
 
     const onSave = (e: FormEvent) => {
         e.preventDefault();
-        console.log(transactions);
+
+        dispatch(
+            addTransaction({ id: Date.now(), value: transactions.value, type: transactions.type }),
+        );
     };
 
     const handleTransactions = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +39,7 @@ const Transactions: React.FC = () => {
     };
 
     const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
-        setTransactions({ ...transactions, type: e.target.value as "saida" | "entrada" });
+        setTransactions({ ...transactions, type: e.target.value as "Saida" | "Entrada" });
     };
     return (
         <>
@@ -67,7 +70,7 @@ const Transactions: React.FC = () => {
                         <TextField
                             id="outlined-age-input"
                             label="Valor"
-                            name="Valor"
+                            name="value"
                             type="number"
                             // value={profile.age || ""}
                             onChange={handleTransactions}

@@ -1,5 +1,6 @@
 type TransactionType = {
-    type: "entrada" | "saida";
+    id: number;
+    type: "Entrada" | "Saida";
     value: number;
 };
 

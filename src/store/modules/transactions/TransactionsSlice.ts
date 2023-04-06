@@ -1,22 +1,28 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import {
+    createDraftSafeSelector,
+    createEntityAdapter,
+    createSelector,
+    createSlice,
+} from "@reduxjs/toolkit";
 
 import { RootState } from "../..";
 import TransactionType from "../../../types/TransactionType";
 
 const adapter = createEntityAdapter<TransactionType>({
-    selectId: (item) => item.type,
+    selectId: (item) => item.id,
 });
 
-const Slice = createSlice({
-    name: "transaction",
+const transactionsSlice = createSlice({
+    name: "transactions",
     initialState: adapter.getInitialState(),
     reducers: {
-        entrada: adapter.addOne,
-        saida: adapter.removeOne,
+        addTransaction: adapter.addOne,
     },
 });
 
 export const { selectAll, selectById } = adapter.getSelectors(
-    (state: RootState) => state.transaction,
+    (state: RootState) => state.transactions,
 );
-export const TransactionsSlice = Slice.reducer;
+
+export const TransactionsSlice = transactionsSlice.reducer;
+export const { addTransaction } = transactionsSlice.actions;
